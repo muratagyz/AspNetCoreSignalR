@@ -1,0 +1,3 @@
+is_global = true
+build_property.RootNamespace = SignalR.Web
+build_property.ProjectDir = C:\Users\mrtag\source\repos\ASP.NETCore-SignalR\SignalR\SignalR.Web\
