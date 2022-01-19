@@ -30,9 +30,10 @@ namespace SignalR.API
             {
                 options.AddPolicy("CorsPolicy", builder =>
                 {
-                    builder.WithOrigins("https://localhost:44375").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                    builder.WithOrigins("https://localhost:44338/").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                 });
             });
+
             services.AddControllers();
             services.AddSignalR();
         }
@@ -49,6 +50,7 @@ namespace SignalR.API
 
             app.UseRouting();
 
+
             app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
@@ -57,7 +59,6 @@ namespace SignalR.API
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<MyHub>("/MyHub");
-
             });
         }
     }

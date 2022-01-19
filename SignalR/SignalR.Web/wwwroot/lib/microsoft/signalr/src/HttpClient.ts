@@ -1,8 +1,7 @@
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 import { AbortSignal } from "./AbortController";
-import { MessageHeaders } from "./IHubProtocol";
 
 /** Represents an HTTP request. */
 export interface HttpRequest {
@@ -16,7 +15,7 @@ export interface HttpRequest {
     content?: string | ArrayBuffer;
 
     /** An object describing headers to apply to the request. */
-    headers?: MessageHeaders;
+    headers?: { [key: string]: string };
 
     /** The XMLHttpRequestResponseType to apply to the request. */
     responseType?: XMLHttpRequestResponseType;
@@ -26,9 +25,6 @@ export interface HttpRequest {
 
     /** The time to wait for the request to complete before throwing a TimeoutError. Measured in milliseconds. */
     timeout?: number;
-
-    /** This controls whether credentials such as cookies are sent in cross-site requests. */
-    withCredentials?: boolean;
 }
 
 /** Represents an HTTP response. */
@@ -61,14 +57,6 @@ export class HttpResponse {
      * @param {ArrayBuffer} content The content of the response.
      */
     constructor(statusCode: number, statusText: string, content: ArrayBuffer);
-
-    /** Constructs a new instance of {@link @microsoft/signalr.HttpResponse} with the specified status code, message and binary content.
-     *
-     * @param {number} statusCode The status code of the response.
-     * @param {string} statusText The status message of the response.
-     * @param {string | ArrayBuffer} content The content of the response.
-     */
-    constructor(statusCode: number, statusText: string, content: string | ArrayBuffer);
     constructor(
         public readonly statusCode: number,
         public readonly statusText?: string,

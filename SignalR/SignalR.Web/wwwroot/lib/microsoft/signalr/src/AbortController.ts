@@ -1,5 +1,5 @@
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 // Rough polyfill of https://developer.mozilla.org/en-US/docs/Web/API/AbortController
 // We don't actually ever use the API being polyfilled, we always use the polyfill because
@@ -8,12 +8,12 @@
 // Not exported from index.
 /** @private */
 export class AbortController implements AbortSignal {
-    private _isAborted: boolean = false;
+    private isAborted: boolean = false;
     public onabort: (() => void) | null = null;
 
-    public abort(): void {
-        if (!this._isAborted) {
-            this._isAborted = true;
+    public abort() {
+        if (!this.isAborted) {
+            this.isAborted = true;
             if (this.onabort) {
                 this.onabort();
             }
@@ -25,7 +25,7 @@ export class AbortController implements AbortSignal {
     }
 
     get aborted(): boolean {
-        return this._isAborted;
+        return this.isAborted;
     }
 }
 

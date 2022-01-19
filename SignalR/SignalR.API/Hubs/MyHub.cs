@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SignalR.API.Hubs
@@ -16,7 +18,7 @@ namespace SignalR.API.Hubs
 
         public async Task GetNames()
         {
-            await Clients.All.SendAsync("ReceiveNames", Names);
+            await Clients.All.SendAsync("ReceiveName", Names);
         }
     }
 }

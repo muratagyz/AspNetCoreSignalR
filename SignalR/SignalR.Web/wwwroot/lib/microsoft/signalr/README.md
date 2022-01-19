@@ -1,26 +1,18 @@
-JavaScript and TypeScript clients for SignalR for ASP.NET Core and Azure SignalR Service
+JavaScript and TypeScript clients for SignalR for ASP.NET Core
 
 ## Installation
 
 ```bash
 npm install @microsoft/signalr
-# or
-yarn add @microsoft/signalr
 ```
-
-To try previews of the next version, use the `next` tag on NPM:
-
+or
 ```bash
-npm install @microsoft/signalr@next
-# or
-yarn add @microsoft/signalr@next
+yarn add @microsoft/signalr
 ```
 
 ## Usage
 
-See the [SignalR Documentation](https://docs.microsoft.com/aspnet/core/signalr) at docs.microsoft.com for documentation on the latest release. [API Reference Documentation](https://docs.microsoft.com/javascript/api/%40aspnet/signalr/?view=signalr-js-latest) is also available on docs.microsoft.com.
-
-For documentation on using this client with Azure SignalR Service and Azure Functions, see the [SignalR Service serverless developer guide](https://docs.microsoft.com/azure/azure-signalr/signalr-concept-serverless-development-config).
+See the [SignalR Documentation](https://docs.microsoft.com/en-us/aspnet/core/signalr) at docs.microsoft.com for documentation on the latest release. [API Reference Documentation](https://docs.microsoft.com/javascript/api/%40aspnet/signalr/?view=signalr-js-latest) is also available on docs.microsoft.com.
 
 ### Browser
 
@@ -36,7 +28,7 @@ To use the client in a NodeJS application, install the package to your `node_mod
 
 ### Example (Browser)
 
-```javascript
+```JavaScript
 let connection = new signalR.HubConnectionBuilder()
     .withUrl("/chat")
     .build();
@@ -51,7 +43,8 @@ connection.start()
 
 ### Example (WebWorker)
 
-```javascript
+
+```JavaScript
 importScripts('signalr.js');
 
 let connection = new signalR.HubConnectionBuilder()
@@ -69,7 +62,7 @@ connection.start()
 
 ### Example (NodeJS)
 
-```javascript
+```JavaScript
 const signalR = require("@microsoft/signalr");
 
 let connection = new signalR.HubConnectionBuilder()

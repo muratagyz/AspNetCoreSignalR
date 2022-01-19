@@ -1,31 +1,32 @@
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 import { HttpClient } from "./HttpClient";
-import { MessageHeaders } from "./IHubProtocol";
 import { ILogger, LogLevel } from "./ILogger";
 import { ITransport, TransferFormat } from "./ITransport";
-import { Arg, getDataDetail, getUserAgentHeader, Platform, sendMessage } from "./Utils";
-import { IHttpConnectionOptions } from "./IHttpConnectionOptions";
+import { EventSourceConstructor } from "./Polyfills";
+import { Arg, getDataDetail, Platform, sendMessage } from "./Utils";
 
 /** @private */
 export class ServerSentEventsTransport implements ITransport {
-    private readonly _httpClient: HttpClient;
-    private readonly _accessTokenFactory: (() => string | Promise<string>) | undefined;
-    private readonly _logger: ILogger;
-    private readonly _options: IHttpConnectionOptions;
-    private _eventSource?: EventSource;
-    private _url?: string;
+    private readonly httpClient: HttpClient;
+    private readonly accessTokenFactory: (() => string | Promise<string>) | undefined;
+    private readonly logger: ILogger;
+    private readonly logMessageContent: boolean;
+    private readonly eventSourceConstructor: EventSourceConstructor;
+    private eventSource?: EventSource;
+    private url?: string;
 
     public onreceive: ((data: string | ArrayBuffer) => void) | null;
     public onclose: ((error?: Error) => void) | null;
 
     constructor(httpClient: HttpClient, accessTokenFactory: (() => string | Promise<string>) | undefined, logger: ILogger,
-                options: IHttpConnectionOptions) {
-        this._httpClient = httpClient;
-        this._accessTokenFactory = accessTokenFactory;
-        this._logger = logger;
-        this._options = options;
+                logMessageContent: boolean, eventSourceConstructor: EventSourceConstructor) {
+        this.httpClient = httpClient;
+        this.accessTokenFactory = accessTokenFactory;
+        this.logger = logger;
+        this.logMessageContent = logMessageContent;
+        this.eventSourceConstructor = eventSourceConstructor;
 
         this.onreceive = null;
         this.onclose = null;
@@ -36,13 +37,13 @@ export class ServerSentEventsTransport implements ITransport {
         Arg.isRequired(transferFormat, "transferFormat");
         Arg.isIn(transferFormat, TransferFormat, "transferFormat");
 
-        this._logger.log(LogLevel.Trace, "(SSE transport) Connecting.");
+        this.logger.log(LogLevel.Trace, "(SSE transport) Connecting.");
 
         // set url before accessTokenFactory because this.url is only for send and we set the auth header instead of the query string for send
-        this._url = url;
+        this.url = url;
 
-        if (this._accessTokenFactory) {
-            const token = await this._accessTokenFactory();
+        if (this.accessTokenFactory) {
+            const token = await this.accessTokenFactory();
             if (token) {
                 url += (url.indexOf("?") < 0 ? "?" : "&") + `access_token=${encodeURIComponent(token)}`;
             }
@@ -57,46 +58,38 @@ export class ServerSentEventsTransport implements ITransport {
 
             let eventSource: EventSource;
             if (Platform.isBrowser || Platform.isWebWorker) {
-                eventSource = new this._options.EventSource!(url, { withCredentials: this._options.withCredentials });
+                eventSource = new this.eventSourceConstructor(url, { withCredentials: true });
             } else {
                 // Non-browser passes cookies via the dictionary
-                const cookies = this._httpClient.getCookieString(url);
-                const headers: MessageHeaders = {};
-                headers.Cookie = cookies;
-                const [name, value] = getUserAgentHeader();
-                headers[name] = value;
-
-                eventSource = new this._options.EventSource!(url, { withCredentials: this._options.withCredentials, headers: { ...headers, ...this._options.headers} } as EventSourceInit);
+                const cookies = this.httpClient.getCookieString(url);
+                eventSource = new this.eventSourceConstructor(url, { withCredentials: true, headers: { Cookie: cookies } } as EventSourceInit);
             }
 
             try {
                 eventSource.onmessage = (e: MessageEvent) => {
                     if (this.onreceive) {
                         try {
-                            this._logger.log(LogLevel.Trace, `(SSE transport) data received. ${getDataDetail(e.data, this._options.logMessageContent!)}.`);
+                            this.logger.log(LogLevel.Trace, `(SSE transport) data received. ${getDataDetail(e.data, this.logMessageContent)}.`);
                             this.onreceive(e.data);
                         } catch (error) {
-                            this._close(error);
+                            this.close(error);
                             return;
                         }
                     }
                 };
 
-                // @ts-ignore: not using event on purpose
-                eventSource.onerror = (e: Event) => {
-                    // EventSource doesn't give any useful information about server side closes.
+                eventSource.onerror = (e: MessageEvent) => {
+                    const error = new Error(e.data || "Error occurred");
                     if (opened) {
-                        this._close();
+                        this.close(error);
                     } else {
-                        reject(new Error("EventSource failed to connect. The connection could not be found on the server,"
-                        + " either the connection ID is not present on the server, or a proxy is refusing/buffering the connection."
-                        + " If you have multiple servers check that sticky sessions are enabled."));
+                        reject(error);
                     }
                 };
 
                 eventSource.onopen = () => {
-                    this._logger.log(LogLevel.Information, `SSE connected to ${this._url}`);
-                    this._eventSource = eventSource;
+                    this.logger.log(LogLevel.Information, `SSE connected to ${this.url}`);
+                    this.eventSource = eventSource;
                     opened = true;
                     resolve();
                 };
@@ -108,21 +101,21 @@ export class ServerSentEventsTransport implements ITransport {
     }
 
     public async send(data: any): Promise<void> {
-        if (!this._eventSource) {
+        if (!this.eventSource) {
             return Promise.reject(new Error("Cannot send until the transport is connected"));
         }
-        return sendMessage(this._logger, "SSE", this._httpClient, this._url!, this._accessTokenFactory, data, this._options);
+        return sendMessage(this.logger, "SSE", this.httpClient, this.url!, this.accessTokenFactory, data, this.logMessageContent);
     }
 
     public stop(): Promise<void> {
-        this._close();
+        this.close();
         return Promise.resolve();
     }
 
-    private _close(e?: Error) {
-        if (this._eventSource) {
-            this._eventSource.close();
-            this._eventSource = undefined;
+    private close(e?: Error) {
+        if (this.eventSource) {
+            this.eventSource.close();
+            this.eventSource = undefined;
 
             if (this.onclose) {
                 this.onclose(e);

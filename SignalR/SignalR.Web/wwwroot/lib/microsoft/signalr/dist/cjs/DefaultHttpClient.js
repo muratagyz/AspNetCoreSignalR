@@ -1,30 +1,37 @@
 "use strict";
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DefaultHttpClient = void 0;
-const Errors_1 = require("./Errors");
-const FetchHttpClient_1 = require("./FetchHttpClient");
-const HttpClient_1 = require("./HttpClient");
-const Utils_1 = require("./Utils");
-const XhrHttpClient_1 = require("./XhrHttpClient");
+var Errors_1 = require("./Errors");
+var HttpClient_1 = require("./HttpClient");
+var NodeHttpClient_1 = require("./NodeHttpClient");
+var XhrHttpClient_1 = require("./XhrHttpClient");
 /** Default implementation of {@link @microsoft/signalr.HttpClient}. */
-class DefaultHttpClient extends HttpClient_1.HttpClient {
+var DefaultHttpClient = /** @class */ (function (_super) {
+    __extends(DefaultHttpClient, _super);
     /** Creates a new instance of the {@link @microsoft/signalr.DefaultHttpClient}, using the provided {@link @microsoft/signalr.ILogger} to log messages. */
-    constructor(logger) {
-        super();
-        if (typeof fetch !== "undefined" || Utils_1.Platform.isNode) {
-            this._httpClient = new FetchHttpClient_1.FetchHttpClient(logger);
-        }
-        else if (typeof XMLHttpRequest !== "undefined") {
-            this._httpClient = new XhrHttpClient_1.XhrHttpClient(logger);
+    function DefaultHttpClient(logger) {
+        var _this = _super.call(this) || this;
+        if (typeof XMLHttpRequest !== "undefined") {
+            _this.httpClient = new XhrHttpClient_1.XhrHttpClient(logger);
         }
         else {
-            throw new Error("No usable HttpClient found.");
+            _this.httpClient = new NodeHttpClient_1.NodeHttpClient(logger);
         }
+        return _this;
     }
     /** @inheritDoc */
-    send(request) {
+    DefaultHttpClient.prototype.send = function (request) {
         // Check that abort was not signaled before calling send
         if (request.abortSignal && request.abortSignal.aborted) {
             return Promise.reject(new Errors_1.AbortError());
@@ -35,11 +42,12 @@ class DefaultHttpClient extends HttpClient_1.HttpClient {
         if (!request.url) {
             return Promise.reject(new Error("No url defined."));
         }
-        return this._httpClient.send(request);
-    }
-    getCookieString(url) {
-        return this._httpClient.getCookieString(url);
-    }
-}
+        return this.httpClient.send(request);
+    };
+    DefaultHttpClient.prototype.getCookieString = function (url) {
+        return this.httpClient.getCookieString(url);
+    };
+    return DefaultHttpClient;
+}(HttpClient_1.HttpClient));
 exports.DefaultHttpClient = DefaultHttpClient;
 //# sourceMappingURL=DefaultHttpClient.js.map

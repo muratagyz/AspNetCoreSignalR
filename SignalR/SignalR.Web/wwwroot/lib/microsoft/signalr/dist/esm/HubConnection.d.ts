@@ -14,31 +14,29 @@ export declare enum HubConnectionState {
 }
 /** Represents a connection to a SignalR Hub. */
 export declare class HubConnection {
-    private readonly _cachedPingMessage;
+    private readonly cachedPingMessage;
     private readonly connection;
-    private readonly _logger;
-    private readonly _reconnectPolicy?;
-    private _protocol;
-    private _handshakeProtocol;
-    private _callbacks;
-    private _methods;
-    private _invocationId;
-    private _closedCallbacks;
-    private _reconnectingCallbacks;
-    private _reconnectedCallbacks;
-    private _receivedHandshakeResponse;
-    private _handshakeResolver;
-    private _handshakeRejecter;
-    private _stopDuringStartError?;
-    private _connectionState;
-    private _connectionStarted;
-    private _startPromise?;
-    private _stopPromise?;
-    private _nextKeepAlive;
-    private _reconnectDelayHandle?;
-    private _timeoutHandle?;
-    private _pingServerHandle?;
-    private _freezeEventListener;
+    private readonly logger;
+    private readonly reconnectPolicy?;
+    private protocol;
+    private handshakeProtocol;
+    private callbacks;
+    private methods;
+    private invocationId;
+    private closedCallbacks;
+    private reconnectingCallbacks;
+    private reconnectedCallbacks;
+    private receivedHandshakeResponse;
+    private handshakeResolver;
+    private handshakeRejecter;
+    private stopDuringStartError?;
+    private connectionState;
+    private connectionStarted;
+    private startPromise?;
+    private stopPromise?;
+    private reconnectDelayHandle?;
+    private timeoutHandle?;
+    private pingServerHandle?;
     /** The server timeout in milliseconds.
      *
      * If this timeout elapses without receiving any messages from the server, the connection will be terminated with an error.
@@ -49,38 +47,35 @@ export declare class HubConnection {
      *
      * The default value is 15,000 milliseconds (15 seconds).
      * Allows the server to detect hard disconnects (like when a client unplugs their computer).
-     * The ping will happen at most as often as the server pings.
-     * If the server pings every 5 seconds, a value lower than 5 will ping every 5 seconds.
      */
     keepAliveIntervalInMilliseconds: number;
     private constructor();
     /** Indicates the state of the {@link HubConnection} to the server. */
-    get state(): HubConnectionState;
+    readonly state: HubConnectionState;
     /** Represents the connection id of the {@link HubConnection} on the server. The connection id will be null when the connection is either
      *  in the disconnected state or if the negotiation step was skipped.
      */
-    get connectionId(): string | null;
+    readonly connectionId: string | null;
     /** Indicates the url of the {@link HubConnection} to the server. */
-    get baseUrl(): string;
     /**
-     * Sets a new url for the HubConnection. Note that the url can only be changed when the connection is in either the Disconnected or
-     * Reconnecting states.
-     * @param {string} url The url to connect to.
-     */
-    set baseUrl(url: string);
+    * Sets a new url for the HubConnection. Note that the url can only be changed when the connection is in either the Disconnected or
+    * Reconnecting states.
+    * @param {string} url The url to connect to.
+    */
+    baseUrl: string;
     /** Starts the connection.
      *
      * @returns {Promise<void>} A Promise that resolves when the connection has been successfully established, or rejects with an error.
      */
     start(): Promise<void>;
-    private _startWithStateTransitions;
-    private _startInternal;
+    private startWithStateTransitions;
+    private startInternal;
     /** Stops the connection.
      *
      * @returns {Promise<void>} A Promise that resolves when the connection has been successfully terminated, or rejects with an error.
      */
     stop(): Promise<void>;
-    private _stopInternal;
+    private stopInternal;
     /** Invokes a streaming hub method on the server using the specified name and arguments.
      *
      * @typeparam T The type of the items returned by the server.
@@ -89,12 +84,12 @@ export declare class HubConnection {
      * @returns {IStreamResult<T>} An object that yields results from the server as they are received.
      */
     stream<T = any>(methodName: string, ...args: any[]): IStreamResult<T>;
-    private _sendMessage;
+    private sendMessage;
     /**
      * Sends a js object to the server.
      * @param message The js object to serialize and send.
      */
-    private _sendWithProtocol;
+    private sendWithProtocol;
     /** Invokes a hub method on the server using the specified name and arguments. Does not wait for a response from the receiver.
      *
      * The Promise returned by this method resolves when the client has sent the invocation to the server. The server may still
@@ -152,25 +147,25 @@ export declare class HubConnection {
      * @param {Function} callback The handler that will be invoked when the connection successfully reconnects.
      */
     onreconnected(callback: (connectionId?: string) => void): void;
-    private _processIncomingData;
-    private _processHandshakeResponse;
-    private _resetKeepAliveInterval;
-    private _resetTimeoutPeriod;
+    private processIncomingData;
+    private processHandshakeResponse;
+    private resetKeepAliveInterval;
+    private resetTimeoutPeriod;
     private serverTimeout;
-    private _invokeClientMethod;
-    private _connectionClosed;
-    private _completeClose;
-    private _reconnect;
-    private _getNextRetryDelay;
-    private _cancelCallbacksWithError;
-    private _cleanupPingTimer;
-    private _cleanupTimeout;
-    private _createInvocation;
-    private _launchStreams;
-    private _replaceStreamingParams;
-    private _isObservable;
-    private _createStreamInvocation;
-    private _createCancelInvocation;
-    private _createStreamItemMessage;
-    private _createCompletionMessage;
+    private invokeClientMethod;
+    private connectionClosed;
+    private completeClose;
+    private reconnect;
+    private getNextRetryDelay;
+    private cancelCallbacksWithError;
+    private cleanupPingTimer;
+    private cleanupTimeout;
+    private createInvocation;
+    private launchStreams;
+    private replaceStreamingParams;
+    private isObservable;
+    private createStreamInvocation;
+    private createCancelInvocation;
+    private createStreamItemMessage;
+    private createCompletionMessage;
 }

@@ -1,5 +1,5 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
+﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 import { CompletionMessage, HubMessage, IHubProtocol, InvocationMessage, MessageType, StreamItemMessage } from "./IHubProtocol";
 import { ILogger, LogLevel } from "./ILogger";
@@ -50,13 +50,13 @@ export class JsonHubProtocol implements IHubProtocol {
             }
             switch (parsedMessage.type) {
                 case MessageType.Invocation:
-                    this._isInvocationMessage(parsedMessage);
+                    this.isInvocationMessage(parsedMessage);
                     break;
                 case MessageType.StreamItem:
-                    this._isStreamItemMessage(parsedMessage);
+                    this.isStreamItemMessage(parsedMessage);
                     break;
                 case MessageType.Completion:
-                    this._isCompletionMessage(parsedMessage);
+                    this.isCompletionMessage(parsedMessage);
                     break;
                 case MessageType.Ping:
                     // Single value, no need to validate
@@ -84,35 +84,35 @@ export class JsonHubProtocol implements IHubProtocol {
         return TextMessageFormat.write(JSON.stringify(message));
     }
 
-    private _isInvocationMessage(message: InvocationMessage): void {
-        this._assertNotEmptyString(message.target, "Invalid payload for Invocation message.");
+    private isInvocationMessage(message: InvocationMessage): void {
+        this.assertNotEmptyString(message.target, "Invalid payload for Invocation message.");
 
         if (message.invocationId !== undefined) {
-            this._assertNotEmptyString(message.invocationId, "Invalid payload for Invocation message.");
+            this.assertNotEmptyString(message.invocationId, "Invalid payload for Invocation message.");
         }
     }
 
-    private _isStreamItemMessage(message: StreamItemMessage): void {
-        this._assertNotEmptyString(message.invocationId, "Invalid payload for StreamItem message.");
+    private isStreamItemMessage(message: StreamItemMessage): void {
+        this.assertNotEmptyString(message.invocationId, "Invalid payload for StreamItem message.");
 
         if (message.item === undefined) {
             throw new Error("Invalid payload for StreamItem message.");
         }
     }
 
-    private _isCompletionMessage(message: CompletionMessage): void {
+    private isCompletionMessage(message: CompletionMessage): void {
         if (message.result && message.error) {
             throw new Error("Invalid payload for Completion message.");
         }
 
         if (!message.result && message.error) {
-            this._assertNotEmptyString(message.error, "Invalid payload for Completion message.");
+            this.assertNotEmptyString(message.error, "Invalid payload for Completion message.");
         }
 
-        this._assertNotEmptyString(message.invocationId, "Invalid payload for Completion message.");
+        this.assertNotEmptyString(message.invocationId, "Invalid payload for Completion message.");
     }
 
-    private _assertNotEmptyString(value: any, errorMessage: string): void {
+    private assertNotEmptyString(value: any, errorMessage: string): void {
         if (typeof value !== "string" || value === "") {
             throw new Error(errorMessage);
         }
