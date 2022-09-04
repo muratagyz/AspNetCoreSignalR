@@ -19,13 +19,14 @@
             }).catch((err) => {
                 console.log(err);
             });
+            $("#conStatus").text(connection.state);
 
             $("#btnNameSave").click(() => {
                 connection.invoke("SendName", $("#txtName").val()).catch((err) => { console.log(err); });
             });
 
             connection.on("ReceiveName", (name) => {
-                console.log(name);
+                $("#namesList").append(`<li class="list-group-item"> ${name} </li>`);
             });
 
         });
@@ -37,9 +38,13 @@
         <input class="form-control" type="text" id="txtName" />
         <hr />
         <button class="btn btn-primary" id="btnNameSave">İsim Kaydet</button>
-        <hr/>
+        <hr />
         <div class="alert alert-info">
             Bağlantı Durumu : <strong id="conStatus"></strong>
         </div>
+    </div>
+    <div class="col-md-8 offset-2">
+        <ul class="list-group" id="namesList">
+        </ul>
     </div>
 </div>
