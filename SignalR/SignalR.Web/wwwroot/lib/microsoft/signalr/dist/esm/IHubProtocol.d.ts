@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { ILogger } from "./ILogger";
 import { TransferFormat } from "./ITransport";
 /** Defines the type of a Hub Message. */
@@ -50,7 +49,7 @@ export interface InvocationMessage extends HubInvocationMessage {
     /** The target method arguments. */
     readonly arguments: any[];
     /** The target methods stream IDs. */
-    readonly streamIds: string[];
+    readonly streamIds?: string[];
 }
 /** A hub message representing a streaming invocation. */
 export interface StreamInvocationMessage extends HubInvocationMessage {
@@ -63,7 +62,7 @@ export interface StreamInvocationMessage extends HubInvocationMessage {
     /** The target method arguments. */
     readonly arguments: any[];
     /** The target methods stream IDs. */
-    readonly streamIds: string[];
+    readonly streamIds?: string[];
 }
 /** A hub message representing a single item produced as part of a result stream. */
 export interface StreamItemMessage extends HubInvocationMessage {
@@ -130,10 +129,10 @@ export interface IHubProtocol {
      *
      * If {@link @microsoft/signalr.IHubProtocol.transferFormat} is 'Text', the `input` parameter must be a string, otherwise it must be an ArrayBuffer.
      *
-     * @param {string | ArrayBuffer | Buffer} input A string, ArrayBuffer, or Buffer containing the serialized representation.
+     * @param {string | ArrayBuffer} input A string or ArrayBuffer containing the serialized representation.
      * @param {ILogger} logger A logger that will be used to log messages that occur during parsing.
      */
-    parseMessages(input: string | ArrayBuffer | Buffer, logger: ILogger): HubMessage[];
+    parseMessages(input: string | ArrayBuffer, logger: ILogger): HubMessage[];
     /** Writes the specified {@link @microsoft/signalr.HubMessage} to a string or ArrayBuffer and returns it.
      *
      * If {@link @microsoft/signalr.IHubProtocol.transferFormat} is 'Text', the result of this method will be a string, otherwise it will be an ArrayBuffer.

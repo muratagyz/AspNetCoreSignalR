@@ -1,8 +1,5 @@
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-// Version token that will be replaced by the prepack command
-/** The version of the SignalR client. */
-export var VERSION = "3.1.3";
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
 export { AbortError, HttpError, TimeoutError } from "./Errors";
 export { HttpClient, HttpResponse } from "./HttpClient";
 export { DefaultHttpClient } from "./DefaultHttpClient";
@@ -14,4 +11,5 @@ export { HttpTransportType, TransferFormat } from "./ITransport";
 export { NullLogger } from "./Loggers";
 export { JsonHubProtocol } from "./JsonHubProtocol";
 export { Subject } from "./Subject";
+export { VERSION } from "./Utils";
 //# sourceMappingURL=index.js.map

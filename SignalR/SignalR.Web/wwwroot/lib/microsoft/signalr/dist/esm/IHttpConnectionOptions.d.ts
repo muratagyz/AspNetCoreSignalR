@@ -1,8 +1,11 @@
 import { HttpClient } from "./HttpClient";
+import { MessageHeaders } from "./IHubProtocol";
 import { ILogger, LogLevel } from "./ILogger";
 import { HttpTransportType, ITransport } from "./ITransport";
 /** Options provided to the 'withUrl' method on {@link @microsoft/signalr.HubConnectionBuilder} to configure options for the HTTP-based transports. */
 export interface IHttpConnectionOptions {
+    /** {@link @microsoft/signalr.MessageHeaders} containing custom headers to be sent with every HTTP request. Note, setting headers in the browser will not work for WebSockets or the ServerSentEvents stream. */
+    headers?: MessageHeaders;
     /** An {@link @microsoft/signalr.HttpClient} that will be used to make HTTP requests. */
     httpClient?: HttpClient;
     /** An {@link @microsoft/signalr.HttpTransportType} value specifying the transport to use for the connection. */
@@ -29,4 +32,18 @@ export interface IHttpConnectionOptions {
      * Negotiation can only be skipped when the {@link @microsoft/signalr.IHttpConnectionOptions.transport} property is set to 'HttpTransportType.WebSockets'.
      */
     skipNegotiation?: boolean;
+    /**
+     * Default value is 'true'.
+     * This controls whether credentials such as cookies are sent in cross-site requests.
+     *
+     * Cookies are used by many load-balancers for sticky sessions which is required when your app is deployed with multiple servers.
+     */
+    withCredentials?: boolean;
+    /**
+     * Default value is 100,000 milliseconds.
+     * Timeout to apply to Http requests.
+     *
+     * This will not apply to Long Polling poll requests, EventSource, or WebSockets.
+     */
+    timeout?: number;
 }

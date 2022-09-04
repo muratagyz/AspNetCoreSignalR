@@ -1,5 +1,3 @@
-/** The version of the SignalR client. */
-export declare const VERSION: string;
 export { AbortSignal } from "./AbortController";
 export { AbortError, HttpError, TimeoutError } from "./Errors";
 export { HttpClient, HttpRequest, HttpResponse } from "./HttpClient";
@@ -15,5 +13,6 @@ export { NullLogger } from "./Loggers";
 export { JsonHubProtocol } from "./JsonHubProtocol";
 export { Subject } from "./Subject";
 export { IRetryPolicy, RetryContext } from "./IRetryPolicy";
+export { VERSION } from "./Utils";
 
 export as namespace signalR;
