@@ -51,6 +51,10 @@
                 $("#clientCount").text(clientCount);
             });
 
+            connection.on("Notify", (countText) => {
+                $("#notify").html(`<div class="alert alert-warning"> ${countText} </div>`);
+            });
+
             statusShow();
 
             $("#btnNameSave").click(() => {
@@ -83,6 +87,8 @@
             </div>
             <div class="clearfix"></div>
         </div>
+
+        <div id="notify"></div>
     </div>
     <div class="col-md-8 offset-2">
         <ul class="list-group" id="namesList">
