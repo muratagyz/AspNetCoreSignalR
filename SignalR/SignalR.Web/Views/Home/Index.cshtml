@@ -47,6 +47,10 @@
                 Start();
             });
 
+            connection.on("ReceiveClientCount", (clientCount) => {
+                $("#clientCount").text(clientCount);
+            });
+
             statusShow();
 
             $("#btnNameSave").click(() => {
@@ -70,6 +74,7 @@
         <div class="alert alert-info">
             <div class="float-start">
                 Bağlantı Durumu : <strong id="conStatus"></strong>
+                , Client Sayısı: <strong id="clientCount"></strong>
             </div>
             <div class="float-end">
                 <div id="loading" class="spinner-border text-primary" role="status">
