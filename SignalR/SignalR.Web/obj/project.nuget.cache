@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "UtM1C4ldvgZj/ePDmd+Y2IWMS7yfH/Ed/QvoDqiA9rU+yGj83G8vfZ6JtIE9I25/KsB6GAt8f9SVlpYcvJWsqw==",
+  "dgSpecHash": "7Idj6vVDbqOf8e3Sfzyze9p/XJjII7YpMMHvuIybICDXKJYjJa/Cj4eXAF10kk6RgT1kfjFaD+9EJqHUI/Gugg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\mrtag\\Source\\Repos\\muratagyz\\AspNetCoreSignalR\\SignalR\\SignalR.Web\\SignalR.Web.csproj",
+  "projectFilePath": "C:\\Users\\mrtag\\source\\repos\\muratagyz\\AspNetCoreSignalR\\SignalR\\SignalR.Web\\SignalR.Web.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

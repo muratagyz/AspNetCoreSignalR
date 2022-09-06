@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\SignalR",
-    "\\SignalR\\SignalR.API"
+    "\\SignalR\\SignalR.API",
+    "\\SignalR\\SignalR.Web",
+    "\\SignalR\\SignalR.Web\\Views",
+    "\\SignalR\\SignalR.Web\\Views\\Home"
   ],
-  "SelectedNode": "\\SignalR\\SignalR.API\\Program.cs",
   "PreviewInSolutionExplorer": false
 }
