@@ -12,33 +12,42 @@
 
             var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.Information).withAutomaticReconnect([1000, 5000, 7000]).withUrl("https://localhost:7073/MyHub").build();
 
-            $("#conStatus").text(connection.state);
-
-            connection.start().then(() => {
+            function statusShow() {
                 $("#conStatus").text(connection.state);
-                $("#loading").hide();
-            }).catch((err) => {
-                console.log(err);
-            });
+            }
 
+            function Start() {
+                connection.start().then(() => {
+                    statusShow();
+                    $("#loading").hide();
+                }).catch((err) => {
+                    console.log(err);
+                    setTimeout(() =>
+                        Start(), 2000
+                    )
+                });
+            }
+
+            statusShow();
+            Start();
 
             connection.onreconnecting(err => {
                 $("#loading").show();
-                $("#conStatus").text(connection.state);
+                statusShow();
             });
-
 
             connection.onreconnected(connectionId => {
                 $("#loading").hide();
-                $("#conStatus").text(connection.state);
+                statusShow();
             });
 
             connection.onclose(() => {
                 $("#loading").hide();
-                $("#conStatus").text(connection.state);
+                statusShow();
+                Start();
             });
 
-            $("#conStatus").text(connection.state);
+            statusShow();
 
             $("#btnNameSave").click(() => {
                 connection.invoke("SendName", $("#txtName").val()).catch((err) => { console.log(err); });
