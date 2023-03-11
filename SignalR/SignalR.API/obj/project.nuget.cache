@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "wdl6s1axQ3Y+97h3Pwe2FthOOG6V3bJWvgx+dTiqhZ0zYhbRcR0UZ+NOC++KY7DQgPHaRVvYsifItX/0hNgEhw==",
+  "dgSpecHash": "IKstnE3oaHtrRW3QIL4IUYAWqs1ezyPsiQcEklukK6YLNFM3tspjsl+y3OgtYobBBtHwUSzLg0+UU8+72NlNZQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\mrtag\\source\\repos\\muratagyz\\AspNetCoreSignalR\\SignalR\\SignalR.API\\SignalR.API.csproj",
   "expectedPackageFiles": [

@@ -25,3 +25,8 @@ C:\Users\mrtag\source\repos\muratagyz\AspNetCoreSignalR\SignalR\SignalR.API\obj\
 C:\Users\mrtag\source\repos\muratagyz\AspNetCoreSignalR\SignalR\SignalR.API\obj\Debug\net6.0\SignalR.API.pdb
 C:\Users\mrtag\source\repos\muratagyz\AspNetCoreSignalR\SignalR\SignalR.API\obj\Debug\net6.0\SignalR.API.genruntimeconfig.cache
 C:\Users\mrtag\source\repos\muratagyz\AspNetCoreSignalR\SignalR\SignalR.API\obj\Debug\net6.0\ref\SignalR.API.dll
+C:\Users\mrtag\source\repos\muratagyz\AspNetCoreSignalR\SignalR\SignalR.API\obj\Debug\net6.0\staticwebassets\msbuild.SignalR.API.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\mrtag\source\repos\muratagyz\AspNetCoreSignalR\SignalR\SignalR.API\obj\Debug\net6.0\staticwebassets\msbuild.build.SignalR.API.props
+C:\Users\mrtag\source\repos\muratagyz\AspNetCoreSignalR\SignalR\SignalR.API\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.SignalR.API.props
+C:\Users\mrtag\source\repos\muratagyz\AspNetCoreSignalR\SignalR\SignalR.API\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.SignalR.API.props
+C:\Users\mrtag\source\repos\muratagyz\AspNetCoreSignalR\SignalR\SignalR.API\obj\Debug\net6.0\staticwebassets.pack.json

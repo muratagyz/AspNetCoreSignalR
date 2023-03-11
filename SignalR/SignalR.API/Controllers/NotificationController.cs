@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SignalR.API.Hubs;
 
@@ -19,6 +18,7 @@ namespace SignalR.API.Controllers
         [HttpGet("teamCount")]
         public async Task<IActionResult> SetTeamCount(int teamCount)
         {
+            MyHub.TeamCount = teamCount;
             await _hubContext.Clients.All.SendAsync("Notify", $"Arkadaşlar Takım {teamCount} kişi olucak.");
             return Ok();
         }

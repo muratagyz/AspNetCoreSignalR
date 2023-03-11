@@ -20,6 +20,10 @@
                 connection.start().then(() => {
                     statusShow();
                     $("#loading").hide();
+
+
+                    connection.invoke("GetNames");
+
                 }).catch((err) => {
                     console.log(err);
                     setTimeout(() =>
@@ -53,6 +57,18 @@
 
             connection.on("Notify", (countText) => {
                 $("#notify").html(`<div class="alert alert-warning"> ${countText} </div>`);
+            });
+
+            connection.on("Error", (errorText) => {
+                alert(errorText);
+            });
+
+            connection.on("ReceiveNames", (names) => {
+                $("#namesList").empty();
+
+                names.forEach((item, index) => {
+                    $("#namesList").append(`<li class="list-group-item"> ${item} </li>`);
+                })
             });
 
             statusShow();
