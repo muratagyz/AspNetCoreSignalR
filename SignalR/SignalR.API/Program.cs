@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using SignalR.API.Hubs;
+using SignalR.API.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,11 @@ builder.Services.AddCors(options =>
     {
         builder.WithOrigins("https://localhost:7293").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
     });
+});
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ConStr"));
 });
 
 builder.Services.AddControllers();
